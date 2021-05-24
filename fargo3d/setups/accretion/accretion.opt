@@ -1,0 +1,28 @@
+# You may enter a description between the BEGIN and END labels.
+# BEGIN
+# Accretion disk in polar coordinates with simple boundaries
+# END
+#---------------------------------------------------------------
+
+FLUIDS := 0
+NFLUIDS = 1
+FARGO_OPT += -DNFLUIDS=${NFLUIDS}
+
+#Coordinate System
+FARGO_OPT += -DCYLINDRICAL
+
+#Dimensions (x->phi,y->r)
+FARGO_OPT += -DX
+FARGO_OPT += -DY
+
+#Equation of State
+FARGO_OPT += -DISOTHERMAL
+
+#External potential (Star)
+FARGO_OPT += -DPOTENTIAL
+
+#Viscosity module
+FARGO_OPT += -DALPHAVISCOSITY
+
+#Buffer zones before applying boundaries
+#FARGO_OPT += -DSTOCKHOLM

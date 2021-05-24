@@ -1,0 +1,33 @@
+Setup            accretion
+
+# Mesh parameters
+
+Nx               1                      # Number of cells in azimuth
+Ny               128                    # Number of cells in radius
+
+Xmin            -3.141592653589793      # Left coordinate of the box in azimuth
+Xmax             3.141592653589793      # Right coordinate of the box in azimuth
+Ymin             0.4                    # Left coordinate of the box in radius
+Ymax             2.5                    # Right coordinate of the box in radius
+
+Spacing          Log                    # Uniform spacing in log
+
+
+# Disk parameters
+
+AspectRatio     0.05                    # Thickness over Radius in the disc
+Sigma0          1.0                     # Surface Density at r=1
+SigmaSlope      0.5                     # Slope for the surface density
+Alpha           1.0e-2                  # Alpha viscosity parameter
+
+# Output parameters
+
+DT              6.283185307179586       # Time steo for fine-grain monitoring
+Ninterm         100                     # Number of DT between hydro outputs
+Ntot            1000                    # Total number of DTs
+OutputDir       outputs/accretion       # Output directory
+
+# Buffer zone parameters (Only if -DSTOCKHOLM is enabled in accretion.opt)
+
+DampingZone     1.15                    # Radial range for damping (in period-ratios)
+TauDamp         0.3                     # Damping timescale (in units of Omega**(-1))
