@@ -42,5 +42,6 @@ def plotField(path, field_name="gasdens", output_number=0, cartesian=True, vmin=
 
 
 plt.figure(figsize=(8, 7))
-plotField("./fargo3d/outputs/fargo_multifluid", field_name="dust1dens", output_number=2, cartesian=True, logscale=True)
+plotField("./fargo3d/outputs/fargo_multifluid", field_name="dust3dens", output_number=10, cartesian=True, logscale=True)
 plt.show()
+# plt.savefig("jupiter_0.05.png")

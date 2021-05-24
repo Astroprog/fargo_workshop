@@ -1,3 +1,10 @@
+fargo3d/arch/
+fargo3d/bin/
+fargo3d/outputs/
+fargo3d/fargo3d
+fargo3d/scripts/*.code
+fargo3d/std/.lastflags
+
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
@@ -66,6 +73,10 @@ db.sqlite3-journal
 # Flask stuff:
 instance/
 .webassets-cache
+
+
+
+
 
 # Scrapy stuff:
 .scrapy
