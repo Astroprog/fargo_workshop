@@ -13,6 +13,12 @@ GIT_VERSION := $(shell git describe --abbrev=8 --dirty --always --tags 2>/dev/nu
 ARCH_CREATE := $(shell mkdir -p $(ARCHDIR))
 SHORTARCH := $(shell echo $(ARCHDIR) | sed -e 's|../||')
 
+ifneq (, $(shell which python3))
+	PYTHON := $(shell which python3)
+else
+	PYTHON := $(shell which python2)
+endif
+
 #------------------------OPTIONS FILE---------------------------------
 
 BLACK=\033[0;30m
@@ -101,11 +107,21 @@ ifeq (-DDEBUG,${findstring -DDEBUG,${FARGO_OPT}})
 	FARGO_DEBUG = 1
 endif
 #----------------------SYSTEM VARIABLES-------------------------------
+# CUDA
 ifndef CUDA
-CUDA           = /usr/local/cuda
-endif
+ifdef CUDA_HOME # select cuda path
+CUDA = ${CUDA_HOME}
+else ifdef CUDA_DIR
+CUDA = ${CUDA_DIR}
+else ifdef CUDA_PATH
+CUDA = ${CUDA_PATH}
+else
+CUDA = /usr/local/cuda
+endif # select cuda path
+endif # ifndef CUDA
+# Python include
 ifndef PYTHON_INCLUDE
-PYTHON_INCLUDE = /usr/include/python2.7
+PYTHON_INCLUDE = /usr/include/python3.8
 endif
 #---------------------------------------------------------------------
 #LINUX PLATFORM (GENERIC, default)
@@ -117,11 +133,10 @@ PARACC_LINUX  = mpicc
 LIBS_LINUX    = -lm
 INC_LINUX     = 
 NVCC_LINUX    = nvcc
-CUDAOPT_LINUX = -O3 -w #-arch=sm_20 
+CUDAOPT_LINUX = -O3 -w #-arch=sm_XX # try utils/cuda/get_cuda_sm.sh
 PARAINC_LINUX = 
 PARALIB_LINUX =
 CUDAINC_LINUX = -I${CUDA}/include/
-CUDALIB_LINUX = -L${CUDA}/lib64/  -lcudart
 CUDALIB_LINUX = -L${CUDA}/lib64/  -lcudart -lstdc++
 CXX_LINUX     = g++ -stdlib=libstdc++
 CXXPARA_LINUX = mpic++ -stdlib=libstdc++
@@ -320,7 +335,7 @@ MAINOBJ  = LowTasks.o psys.o main.o param.o var.o usage.o   	    \
 	   fargo_ppa_a.o fargo_ppa_b.o fargo_ppa_c.o            \
 	   fargo_ppa_d.o fargo_ppa_d_2d.o fargo_ppa_steep.o	\
 	   vanleerx_ppa.o dh_boundary.o cpvel.o         	\
-	   integrate_emf.o monitor.o resist.o resistivity.o	\
+	   integrate_emf.o monitor.o				\
 	   viscosity.o init_stockholm.o visctensor_cart.o	\
 	   addviscosity_cart.o addviscosity_cyl.o		\
 	   addviscosity_sph.o visctensor_sph.o			\
@@ -335,7 +350,23 @@ MAINOBJ  = LowTasks.o psys.o main.o param.o var.o usage.o   	    \
 	   collisions.o resetfield.o totaldens.o		\
 	   floor.o ShearingPeriodicBC.o summary.o		\
 	   dust_diffusion_main.o dust_diffusion_core.o		\
-	   dust_diffusion_coefficients.o copy_field.o
+	   dust_diffusion_coefficients.o copy_field.o           \
+	   nimhd_hall_effect.o 					\
+	   nimhd_hall_effect_emfx.o				\
+	   nimhd_hall_effect_emfy.o 				\
+           nimhd_hall_effect_emfz.o 				\
+	   nimhd_hall_effect_updateB.o				\
+	   nimhd_hall_effect_update_emfs.o                      \
+	   nimhd_hall_effect_coeff.o				\
+	   nimhd_ambipolar_diffusion.o				\
+	   nimhd_ambipolar_diffusion_emfx.o			\
+	   nimhd_ambipolar_diffusion_emfy.o			\
+	   nimhd_ambipolar_diffusion_emfz.o			\
+	   nimhd_ambipolar_diffusion_coeff.o			\
+	   nimhd_ohmic_diffusion.o				\
+	   nimhd_ohmic_diffusion_coeff.o			\
+	   compute_jx.o compute_jy.o compute_jz.o		\
+
 #-----------------------#Cuda objects---------------------------------
 GPU_OBJ  =  reduction_sum_device.o reduction_min_device.o	\
 	   	lowtasks_gpu.o 
@@ -361,7 +392,7 @@ GPU_OBJBLOCKS =  CompPresIso_gpu.o CompPresAd_gpu.o 		\
 	   lorentz_force_gpu.o CompPresPoly_gpu.o 		\
 	   fargo_ppa_a_gpu.o fargo_ppa_b_gpu.o			\
 	   fargo_ppa_c_gpu.o fargo_ppa_d_gpu.o			\
-	   fargo_ppa_d_2d_gpu.o resist_gpu.o 			\
+	   fargo_ppa_d_2d_gpu.o 				\
 	   integrate_emf_gpu.o visctensor_cart_gpu.o 		\
 	   addviscosity_cart_gpu.o addviscosity_cyl_gpu.o	\
 	   visctensor_cyl_gpu.o addviscosity_sph_gpu.o		\
@@ -374,8 +405,20 @@ GPU_OBJBLOCKS =  CompPresIso_gpu.o CompPresAd_gpu.o 		\
            fill_ghostsx_gpu.o collisions_gpu.o                  \
            totaldens_gpu.o floor_gpu.o		                \
 	   resetfield_gpu.o dust_diffusion_core_gpu.o		\
-	   dust_diffusion_coefficients_gpu.o
-
+	   dust_diffusion_coefficients_gpu.o                    \
+	   nimhd_hall_effect_emfx_gpu.o				\
+	   nimhd_hall_effect_emfy_gpu.o 			\
+           nimhd_hall_effect_emfz_gpu.o 			\
+	   nimhd_hall_effect_updateB_gpu.o			\
+	   nimhd_hall_effect_update_emfs_gpu.o                  \
+	   nimhd_hall_effect_coeff_gpu.o			\
+	   nimhd_ambipolar_diffusion_emfx_gpu.o			\
+	   nimhd_ambipolar_diffusion_emfy_gpu.o			\
+	   nimhd_ambipolar_diffusion_emfz_gpu.o			\
+	   nimhd_ambipolar_diffusion_coeff_gpu.o		\
+	   nimhd_ohmic_diffusion_gpu.o				\
+	   nimhd_ohmic_diffusion_coeff_gpu.o			\
+	   compute_jx_gpu.o compute_jy_gpu.o compute_jz_gpu.o
 #</CUDA OBJECTS>
 #---------------------------------------------------------------------
 
@@ -430,7 +473,7 @@ ifeq (MATPLOTLIB,${findstring MATPLOTLIB,${FARGO_DISPLAY}})
 	FARGO_OPT += -DMATPLOTLIB
 	INCLUDE   += -I${PYTHON_INCLUDE}
 	OBJECTS   +=  matplotlib.o
-	LIBS      += -lpython2.7
+	LIBS      += -lpython3.8
 endif
 # Debug mode if FARGO_DEBUG = 1, Note that this mode is only 
 # meant to execute gdb (or lldb, etc.) or valgrind.
@@ -550,7 +593,7 @@ endif
 var.c: ${PARFILE} stdpar.par #$(VARFILE) default_variables.dat
 	@echo ""
 	@echo "Generating var.c file"
-	@python ${SCRIPTSDIR}/par.py $(PARFILE) ${STDDIR}/stdpar.par
+	@${PYTHON} ${SCRIPTSDIR}/par.py $(PARFILE) ${STDDIR}/stdpar.par
 
 ${SETUP}.units:
 	@touch ${SETUPSDIR}/${SETUP}/${SETUP}.units
@@ -558,7 +601,7 @@ ${SETUP}.units:
 rescale.c: ${PARFILE} ${SCRIPTSDIR}/unitparser.py ${STDDIR}/standard.units ${SETUP}.units
 	@echo ""
 	@echo "Generating rescale.c file"
-	@python ${SCRIPTSDIR}/unitparser.py ${SETUP}
+	@${PYTHON} ${SCRIPTSDIR}/unitparser.py ${SETUP}
 
 .PHONY: clean mrproper force
 gitversion: force
@@ -577,11 +620,11 @@ change_arch.o : change_arch.c ${SCRIPTSDIR}/bound_cpu.code ${SCRIPTSDIR}/bound_g
 
 ${SCRIPTSDIR}/bound_proto.code ${SCRIPTSDIR}/bound_cpu.code ${SCRIPTSDIR}/bound_gpu.code:
 	@echo "Generating bound_code files..."
-	@python ${SCRIPTSDIR}/bound_code.py ${SETUP} ${NFLUIDS}
+	@${PYTHON} ${SCRIPTSDIR}/bound_code.py ${SETUP} ${NFLUIDS}
 
 collisions.cu: collisions_template.cu ${GLOBAL}
 	@echo "PARSING collisions.cu"
-	@python ${SCRIPTSDIR}/collisions_gpu.py ${NFLUIDS}
+	@${PYTHON} ${SCRIPTSDIR}/collisions_gpu.py ${NFLUIDS}
 
 %_gpu.o : %.cu ${GLOBAL} #Rule: test_gpu.o is created from test.cu
 	@echo NVCC $< "==>" $*_gpu.o
@@ -590,7 +633,7 @@ collisions.cu: collisions_template.cu ${GLOBAL}
 
 %.cu: %.c
 	@echo C2CUDA $< "==>" $*.cu
-	@python ${SCRIPTSDIR}/c2cuda.py -i $< -o $*.cu -s ${SETUP}	
+	@${PYTHON} ${SCRIPTSDIR}/c2cuda.py -i $< -o $*.cu -s ${SETUP}	
 
 reduction_sum_device.o: reduction_sum_device.cu
 	@echo NVCC $< "==>" $*.o
@@ -619,7 +662,7 @@ zmax_bound_%.o: zmax_bound_%.c ${GLOBAL}
 	@${COMPILER} zmax_bound_$*.c -c ${INCLUDE} ${OPTIONS} ${FARGO_OPT}
 
 ymin_bound_%.c ymax_bound_%.c zmin_bound_%.c zmax_bound_%.c: boundaries.txt centering.txt ${SETUPSDIR}/${SETUP}/$(SETUP).bound.% ${GLOBAL} ${BOUNDARIES_DEP}
-	@-python ${SCRIPTSDIR}/boundparser.py $^
+	@-${PYTHON} ${SCRIPTSDIR}/boundparser.py $^
 
 endif
 

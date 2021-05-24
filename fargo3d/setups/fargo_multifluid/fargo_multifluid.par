@@ -43,6 +43,6 @@ Frame			F
 
 DT			0.314159265359	Time step length
 Ninterm	 		20		Time steps between outputs
-Ntot			20000		Total number of time steps
+Ntot			2000		Total number of time steps
 
 OutputDir		@outputs/fargo_multifluid
