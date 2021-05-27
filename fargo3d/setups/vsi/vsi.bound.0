@@ -1,0 +1,34 @@
+#Boundaries configuration file for p3diso.bound
+#----------------------------------------------
+
+Density:
+	Ymin: SYMMETRIC
+	Ymax: SYMMETRIC
+	Zmin: SYMMETRIC
+	Zmax: SYMMETRIC
+
+Energy:
+	Ymin: EXTRAPOLATE_ENERGY_LEFT
+	# Ymin: SYMMETRIC
+	Ymax: SYMMETRIC
+	Zmin: SYMMETRIC
+	Zmax: SYMMETRIC
+
+Vx:
+	Ymin:	EXTRAPOLATE_VX_LEFT
+	# Ymin:	SYMMETRIC
+	Ymax:   SYMMETRIC
+	Zmin:	SYMMETRIC
+	Zmax: 	SYMMETRIC
+
+Vy:
+	Ymin:   ANTISYMMETRIC
+	Ymax:   OUTFLOWOUTER
+	Zmin:	SYMMETRIC
+	Zmax:	SYMMETRIC
+
+Vz:
+	Ymin:	SYMMETRIC
+	Ymax:	SYMMETRIC
+	Zmin:	ANTISYMMETRIC
+	Zmax:	ANTISYMMETRIC

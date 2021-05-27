@@ -24,5 +24,3 @@ FARGO_OPT += -DPOTENTIAL
 #Viscosity module
 FARGO_OPT += -DALPHAVISCOSITY
 
-#Buffer zones before applying boundaries
-#FARGO_OPT += -DSTOCKHOLM
