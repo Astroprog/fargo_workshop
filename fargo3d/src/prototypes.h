@@ -153,6 +153,7 @@ ex void comm_gpu(int);
 
 ex void (_collisions_gpu)(real,int,int,int,int);
 
+ex void Cooling_cpu(real);
 //Monitoring Prototypes
 ex void mon_dens_cpu(void);
 ex void mon_momx_cpu(void);
@@ -608,6 +609,7 @@ ex void addviscosity_sph_gpu(real);
 
 ex void ComputeTotalDensity_gpu(void);
 ex void Floor_gpu(void);
+ex void Cooling_gpu(real);
 
 #ifndef __NOPROTO
 

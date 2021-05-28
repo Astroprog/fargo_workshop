@@ -18,26 +18,24 @@ void Cooling_cpu (real dt) {
 
 //<EXTERNAL>
   real* e   = Energy->field_cpu;
-  real* e0 = Energy_initial->field_cpu;
-  real* rho = Density->field_cpu;
+  real* e0   = Energy_initial->field_cpu;
+  real* rho   = Density->field_cpu;
   int pitch  = Pitch_cpu;
   int stride = Stride_cpu;
   int size_x = XIP; 
   int size_y = Ny+2*NGHY-1;
   int size_z = Nz+2*NGHZ-1;
-  int fluidtype = Fluidtype;
 //<\EXTERNAL>
 
 //<INTERNAL>
-  int i; 
-  int j;
-  int k;
+  int i; //Variables reserved
+  int j; //for the topology
+  int k; //of the kernels
   int ll;
 //<\INTERNAL>
   
 //<CONSTANT>
 // real GAMMA(1);
-// real TCOOL(1);
 // real Sxj(Ny+2*NGHY);
 // real Syj(Ny+2*NGHY);
 // real Szj(Ny+2*NGHY);
@@ -61,11 +59,8 @@ void Cooling_cpu (real dt) {
       for(i=0; i<size_x; i++) {
 #endif
 //<#>
-
-    ll = l;
-  if (fluidtype == GAS) {
-    e[ll] = (e0[ll] + (e[ll] / rho[ll] * (GAMMA-1.0) - e0[ll]) * exp(-dt / TCOOL)) * rho[ll] / (GAMMA-1.0);
-  }
+	ll = l;
+        e[ll] = (e0[ll] + (e[ll] / rho[ll] * (GAMMA-1.0) - e0[ll]) * exp(-dt / TCOOL)) * rho[ll] / (GAMMA-1.0);
 //<\#>
 #ifdef X
       }

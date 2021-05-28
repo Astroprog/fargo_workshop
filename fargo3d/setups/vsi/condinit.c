@@ -33,11 +33,13 @@ void Init() {
   real *v2;
   real *v3;
   real *e;
+  real *e0;
   real *rho;
   real h;
   
   rho = Density->field_cpu;
   e   = Energy->field_cpu;
+  e0   = Energy_initial->field_cpu;
   v1  = Vx->field_cpu;
   v2  = Vy->field_cpu;
   v3  = Vz->field_cpu;
@@ -87,6 +89,8 @@ void Init() {
             e[l] = eCorona;
             v1[l] = 0.0;
         }
+
+        e0[l] = e[l] / rho[l] * (GAMMA - 1.0);
 
         v1[l] -= OMEGAFRAME*r;
         v1[l] += del_v1;

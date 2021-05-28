@@ -3,9 +3,9 @@ Density:
 	Ymax:  SYMMETRIC
 
 Vx:
-	Ymin:  SYMMETRIC
-	Ymax:  SYMMETRIC
+	Ymin:  POWERLAW
+	Ymax:  POWERLAW
 
 Vy:
-	Ymin:  SYMMETRIC
-	Ymax:  SYMMETRIC
+	Ymin:  ANTISYMMETRIC
+	Ymax:  ANTISYMMETRIC

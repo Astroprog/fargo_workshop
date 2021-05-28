@@ -110,6 +110,7 @@ Field *Qs;
 
 Field *Density;
 Field *Energy;
+Field *Energy_initial;
 Field *Pressure;
 
 Field *Total_Density;
@@ -291,6 +292,7 @@ Fluid *Fluids[NFLUIDS];
 
 //Pointers to functions
 //WARNING!!! FUNCTIONS' ARGUMENTS MUST NOT CONTAIN BLANK SPACES
+void (*Cooling)(real);
 void (*ComputePressureFieldIso)();
 void (*ComputePressureFieldAd)();
 void (*ComputePressureFieldPoly)();

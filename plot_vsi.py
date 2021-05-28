@@ -36,11 +36,12 @@ def plotField(path, field_name="gasdens", output_number=0, vmin=None, vmax=None,
     plt.colorbar(pad=0)
 
 
+frame = 1
 plt.style.use("dark_background")
 plt.figure(figsize=(12, 7))
-plotField("./vsi/outputs/wind/", 
+plotField("./fargo3d/outputs/vsi/", 
         field_name="gasvz", 
-        output_number=2, 
+        output_number=frame, 
         vmin=-1e-2, 
         vmax=1e-2, 
         logscale=False,
@@ -49,9 +50,9 @@ plt.show()
 
 plt.style.use("dark_background")
 plt.figure(figsize=(8, 7))
-plotField("./vsi/outputs/wind/", 
+plotField("./fargo3d/outputs/vsi/", 
         field_name="gasdens", 
-        output_number=50, 
+        output_number=frame, 
         vmin=None, 
         vmax=None, 
         logscale=True,

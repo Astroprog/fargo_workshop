@@ -604,6 +604,8 @@ void CreateFields() {
   Qs            = CreateField("Qs"           , 0,0,0,0);
   Pressure      = CreateField("Pressure"     , 0,0,0,0);
   Total_Density = CreateField("Total_Density", 0,0,0,0);
+  Energy_initial = CreateField("Energy_initial", 0,0,0,0);
+
   
   QL      = CREATEFIELDALIAS("QLeft", Pressure, 0);
   QR      = CreateField("QRight", 0,0,0,0);

@@ -2,6 +2,10 @@ SYMMETRIC:
            Centered:   |a|a|
            Staggered:  |a|a|a|
  
+ANTISYMMETRIC:
+           Centered:   |-a|a|
+           Staggered:  |-a|0|a|
+           
 POWERLAW:
            Centered:   |active*pow(Ymed(jact)/Ymed(jgh),0.5)|active|
            Staggered:  |active*pow(Ymed(jact)/Ymed(jgh),0.5)|active*pow(Ymed(jact)/Ymed(jgh),0.5)|active|

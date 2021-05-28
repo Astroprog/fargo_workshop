@@ -19,6 +19,7 @@ void ChangeArch() {
 
   //Function pointers assignment (Default values ==> _cpu)
   //----------------------------------------------------
+  Cooling = Cooling_cpu;
   ComputePressureFieldIso = ComputePressureFieldIso_cpu;
   ComputePressureFieldAd = ComputePressureFieldAd_cpu;
   ComputePressureFieldPoly = ComputePressureFieldPoly_cpu;
@@ -465,6 +466,12 @@ void ChangeArch() {
 	  DustDiffusion_Core         = DustDiffusion_Core_gpu;
 	  DustDiffusion_Coefficients = DustDiffusion_Coefficients_gpu;
 	  printf("Dust diffusion runs on the GPU\n");
+	}
+      }
+      if (strcmp(name, "cooling") == 0) {
+	if(strval[0] == 'g'){
+	  Cooling         = Cooling_gpu;
+	  printf("Cooling runs on the GPU\n");
 	}
       }
       if (strcmp(name, "communications") == 0) {

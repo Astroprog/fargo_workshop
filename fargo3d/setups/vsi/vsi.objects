@@ -1,0 +1,2 @@
+MAINOBJ += cooling.o
+GPUOBJ += cooling_gpu.o
